@@ -7,10 +7,10 @@ namespace App\Livewire\Chat;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class Index extends Component
+class Show extends Component
 {
     public function render(): View
     {
-        return view('livewire.chat.index');
+        return view('livewire.chat.show');
     }
 }
