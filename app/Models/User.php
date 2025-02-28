@@ -3,13 +3,28 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\CarbonInterface;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @package App\Models
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property ?CarbonInterface $email_verified_at
+ * @property ?CarbonInterface $created_at
+ * @property ?CarbonInterface $updated_at
+ * @property Collection<Chat> $chats
+ */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -44,5 +59,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function chats(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'sender_id')
+            ->orWhere('receiver_id', $this->id);
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Livewire\Chat\Show;
-use App\Livewire\Chat\Index;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', static function () {
@@ -21,10 +19,15 @@ Route::middleware('auth')->group(function () {
             Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
         });
 
+    Route::prefix('participants')
+        ->group(function () {
+            Route::get('/', \App\Livewire\Participant\Index::class)->name('participants.index');
+        });
+
     Route::prefix('chats')
         ->group(function () {
-            Route::get('/', Index::class)->name('chat.index');
-            Route::get('/{chat}', Show::class)->name('chat.show');
+            Route::get('/', \App\Livewire\Chat\Index::class)->name('chats.index');
+            Route::get('/{chat}', \App\Livewire\Chat\Show::class)->name('chats.show');
         });
 });
 
